@@ -141,7 +141,7 @@ function Stable() {
     return (
       <div
         key={item.id}
-        className={`child`}
+        className={`child ${Object.keys(draggedItem).length === 0 ? "makeChildVisible": ""}`}
         draggable
         onDragStart={(e) =>
           handleDragStart(e, { item, index, parentId: parent.id })

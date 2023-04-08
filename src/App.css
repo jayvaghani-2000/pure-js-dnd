@@ -33,6 +33,10 @@
   cursor: grab;
 }
 
+.makeChildVisible {
+  display: block !important;
+}
+
 @keyframes grow {
   from {
     height: 20px;
