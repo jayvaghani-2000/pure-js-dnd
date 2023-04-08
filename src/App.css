@@ -9,15 +9,16 @@
   flex-direction: row;
   align-items: center;
   border-radius: 5px;
-  min-height: 15px;
+  min-height: 20px;
+  padding: 5px;
   width: 100%;
-  transition: width 2s, height 4s;
 }
 
 .activeDragOver {
-  animation: grow 0.2s ease-in-out forwards;
+  animation: grow 0.05s ease-in-out forwards;
   background-color: #f5f6ff;
 }
+
 .activeDragOverWithChild {
   background-color: #f5f6ff;
 }
@@ -25,7 +26,6 @@
 .child {
   background: #d6d8e6;
   border-radius: 5px;
-  margin: 5px !important;
   padding: 10px;
   text-align: center;
   width: 120px;
@@ -33,17 +33,9 @@
   cursor: grab;
 }
 
-.dropzone {
-  background-color: #fff;
-  border: 1px dashed #ccc;
-  border-radius: 5px;
-  height: 50px;
-  margin: 5px 0;
-}
-
 @keyframes grow {
   from {
-    height: 10px;
+    height: 20px;
   }
   to {
     height: 48px;

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 function Stable() {
@@ -40,6 +40,8 @@ function Stable() {
       children: [],
     },
   ]);
+  const draggedElementRef = useRef();
+  const dummyRef = useRef();
   const previousDraggedOverParent = useRef("");
   const [draggedOverParent, setDraggedOverParent] = useState("");
   const [draggedItem, setDraggedItem] = useState({});
@@ -104,11 +106,18 @@ function Stable() {
     setParents(handleAddIntermediateDroppable);
   };
 
-  const handleDrag = (e) => {};
+  const handleDrag = (event) => {
+    draggedElementRef.current.style.display = "none";
+  };
 
   const handleDragEnd = () => {
+    if(draggedElementRef.current) {
+      draggedElementRef.current.style.display = "block";
+    }
     setDraggedItem({});
     setPlaceholderIndex(-1);
+    setDraggedOverParent("");
+    previousDraggedOverParent.current = "";
   };
 
   const handleDragOverParent = (e, parentId) => {
@@ -121,8 +130,11 @@ function Stable() {
 
   const handleDropEndCapture = (e) => {
     e.preventDefault();
-    setDraggedOverParent("");
+    if(draggedElementRef.current) {
+      draggedElementRef.current.style.display = "block";
+    }
     previousDraggedOverParent.current = "";
+    setDraggedOverParent("");
   };
 
   const renderChild = (item, index, parent) => {
@@ -133,6 +145,11 @@ function Stable() {
         draggable
         onDragStart={(e) =>
           handleDragStart(e, { item, index, parentId: parent.id })
+        }
+        ref={
+          index === draggedItem.index && draggedItem.parentId === parent.id
+            ? draggedElementRef
+            : dummyRef
         }
         onDrag={(e) => handleDrag(e, { item, index, parentId: parent.id })}
         onDragEnd={handleDragEnd}
