@@ -142,13 +142,19 @@ function Stable() {
     );
   };
 
+  const getDragOverClass = (parent) => {
+    return parent.children.length > 0
+      ? "activeDragOverWithChild"
+      : "activeDragOver";
+  };
+
   return (
     <div className="container">
       {parents.map((parent) => (
         <div
           key={parent.id}
           className={`parent ${
-            draggedOverParent === parent.id ? "activeDragOver" : ""
+            draggedOverParent === parent.id ? getDragOverClass(parent) : ""
           }`}
           onDragOver={(e) => handleDragOverParent(e, parent.id)}
           onDrop={(e) => handleDragEnter(e, parent.id)}
