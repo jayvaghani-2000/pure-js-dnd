@@ -31,6 +31,14 @@ function Stable() {
       id: "parent4",
       children: [],
     },
+    {
+      id: "parent5",
+      children: [{ id: uuidv4(), text: "Grapes" }],
+    },
+    {
+      id: "parent6",
+      children: [],
+    },
   ]);
   const previousDraggedOverParent = useRef("");
   const [draggedOverParent, setDraggedOverParent] = useState("");
@@ -108,7 +116,6 @@ function Stable() {
     if (previousDraggedOverParent.current !== parentId) {
       setDraggedOverParent(parentId);
       previousDraggedOverParent.current = parentId;
-      console.log(parentId);
     }
   };
 
@@ -130,7 +137,7 @@ function Stable() {
         onDrag={(e) => handleDrag(e, { item, index, parentId: parent.id })}
         onDragEnd={handleDragEnd}
       >
-        {item.text}
+        <h4>{item.text}</h4>
       </div>
     );
   };
