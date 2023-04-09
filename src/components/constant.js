@@ -2,11 +2,11 @@ import { v4 as uuidv4 } from "uuid";
 
 export const INITIAL_DRAGGABLE__ELEMENTS = [
   {
-    id: "parent0",
+    id: "droppable0",
     children: [],
   },
   {
-    id: "parent1",
+    id: "droppable1",
     children: [
       { id: uuidv4(), text: "Apple" },
       { id: uuidv4(), text: "Banana" },
@@ -14,11 +14,11 @@ export const INITIAL_DRAGGABLE__ELEMENTS = [
     ],
   },
   {
-    id: "parent2",
+    id: "droppable2",
     children: [],
   },
   {
-    id: "parent3",
+    id: "droppable3",
     children: [
       { id: uuidv4(), text: "Dog" },
       { id: uuidv4(), text: "Elephant" },
@@ -26,15 +26,15 @@ export const INITIAL_DRAGGABLE__ELEMENTS = [
     ],
   },
   {
-    id: "parent4",
+    id: "droppable4",
     children: [],
   },
   {
-    id: "parent5",
+    id: "droppable5",
     children: [{ id: uuidv4(), text: "Grapes" }],
   },
   {
-    id: "parent6",
+    id: "droppable6",
     children: [],
   },
 ];

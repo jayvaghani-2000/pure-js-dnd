@@ -55,14 +55,14 @@ function Draggable() {
 
     const handleAddIntermediateDroppable = [
       {
-        id: "parent0",
+        id: "droppable0",
         children: [],
       },
       ...updatedParents
         .filter((i) => i.children.length)
         .map((j, index) => [
-          { ...j, id: `parent${2 * index + 1}` },
-          { id: `parent${2 * index + 2}`, children: [] },
+          { ...j, id: `droppable${2 * index + 1}` },
+          { id: `droppable${2 * index + 2}`, children: [] },
         ])
         .flat(),
     ];
@@ -142,10 +142,10 @@ function Draggable() {
       {parents.map((parent) => (
         <div
           key={parent.id}
-          className={`parent ${
+          className={`droppable ${
             draggedOverParent === parent.id ? getDragOverClass(parent) : ""
           } ${
-            draggedItem.parentId === parent.id
+            draggedItem.parentId === parent.id && parent.children.length === 1
               ? "activeDragWithChildOneChild"
               : ""
           }`}
