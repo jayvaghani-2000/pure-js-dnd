@@ -1,11 +1,11 @@
 import React from "react";
 import "./App.css";
-import Stable from "./components/stable";
+import Draggable from "./components/Draggable";
 
 function App() {
   return (
     <div className="App">
-      <Stable />
+      <Draggable />
     </div>
   );
 }

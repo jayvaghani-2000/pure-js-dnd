@@ -1,45 +1,8 @@
 import { useRef, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { INITIAL_DRAGGABLE__ELEMENTS } from "./constant";
 
-function Stable() {
-  const [parents, setParents] = useState([
-    {
-      id: "parent0",
-      children: [],
-    },
-    {
-      id: "parent1",
-      children: [
-        { id: uuidv4(), text: "Apple" },
-        { id: uuidv4(), text: "Banana" },
-        { id: uuidv4(), text: "Cat" },
-      ],
-    },
-    {
-      id: "parent2",
-      children: [],
-    },
-    {
-      id: "parent3",
-      children: [
-        { id: uuidv4(), text: "Dog" },
-        { id: uuidv4(), text: "Elephant" },
-        { id: uuidv4(), text: "Fish" },
-      ],
-    },
-    {
-      id: "parent4",
-      children: [],
-    },
-    {
-      id: "parent5",
-      children: [{ id: uuidv4(), text: "Grapes" }],
-    },
-    {
-      id: "parent6",
-      children: [],
-    },
-  ]);
+function Draggable() {
+  const [parents, setParents] = useState(INITIAL_DRAGGABLE__ELEMENTS);
   const draggedElementRef = useRef();
   const dummyRef = useRef();
   const previousDraggedOverParent = useRef("");
@@ -107,7 +70,7 @@ function Stable() {
     setParents(handleAddIntermediateDroppable);
   };
 
-  const handleDrag = (event) => {
+  const handleDrag = (event, items) => {
     if (draggedElementRef.current) {
       draggedElementRef.current.style.display = "none";
     }
@@ -150,6 +113,7 @@ function Stable() {
         className={`child ${
           Object.keys(draggedItem).length === 0 ? "makeChildVisible" : ""
         }`}
+        id={item.id}
         draggable
         onDragStart={(e) =>
           handleDragStart(e, { item, index, parentId: parent.id })
@@ -190,12 +154,12 @@ function Stable() {
           onDropCapture={handleDropEndCapture}
         >
           {parent.children.map((child, index) =>
-                renderChild(child, index, parent)
-              )}
+            renderChild(child, index, parent)
+          )}
         </div>
       ))}
     </div>
   );
 }
 
-export default Stable;
+export default Draggable;

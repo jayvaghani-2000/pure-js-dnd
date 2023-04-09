@@ -17,10 +17,12 @@
 .activeDragOver {
   animation: grow 0.05s ease-in-out forwards;
   background-color: #f5f6ff;
+  opacity: 0.5;
 }
 
 .activeDragOverWithChild {
   background-color: #f5f6ff;
+  opacity: 0.5;
 }
 .activeDragWithChildOneChild {
   height: 48px;
