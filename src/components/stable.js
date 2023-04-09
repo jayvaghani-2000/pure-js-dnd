@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 function Stable() {
@@ -43,9 +43,10 @@ function Stable() {
   const draggedElementRef = useRef();
   const dummyRef = useRef();
   const previousDraggedOverParent = useRef("");
+  const previousPlaceHolder = useRef({});
   const [draggedOverParent, setDraggedOverParent] = useState("");
   const [draggedItem, setDraggedItem] = useState({});
-  const [placeholderIndex, setPlaceholderIndex] = useState(-1);
+  const [placeholderIndex, setPlaceholderIndex] = useState({});
 
   const getDraggedParentIndex = (parents, item) => {
     return parents.findIndex((parent) => parent.id === item.parentId);
@@ -107,16 +108,19 @@ function Stable() {
   };
 
   const handleDrag = (event) => {
-    draggedElementRef.current.style.display = "none";
+    if (draggedElementRef.current) {
+      draggedElementRef.current.style.display = "none";
+    }
   };
 
   const handleDragEnd = () => {
-    if(draggedElementRef.current) {
+    if (draggedElementRef.current) {
       draggedElementRef.current.style.display = "block";
     }
     setDraggedItem({});
-    setPlaceholderIndex(-1);
+    setPlaceholderIndex({});
     setDraggedOverParent("");
+    previousPlaceHolder.current = {};
     previousDraggedOverParent.current = "";
   };
 
@@ -130,18 +134,22 @@ function Stable() {
 
   const handleDropEndCapture = (e) => {
     e.preventDefault();
-    if(draggedElementRef.current) {
+    if (draggedElementRef.current) {
       draggedElementRef.current.style.display = "block";
     }
     previousDraggedOverParent.current = "";
+    previousPlaceHolder.current = {};
     setDraggedOverParent("");
+    setPlaceholderIndex({});
   };
 
   const renderChild = (item, index, parent) => {
     return (
       <div
         key={item.id}
-        className={`child ${Object.keys(draggedItem).length === 0 ? "makeChildVisible": ""}`}
+        className={`child ${
+          Object.keys(draggedItem).length === 0 ? "makeChildVisible" : ""
+        }`}
         draggable
         onDragStart={(e) =>
           handleDragStart(e, { item, index, parentId: parent.id })
@@ -172,14 +180,18 @@ function Stable() {
           key={parent.id}
           className={`parent ${
             draggedOverParent === parent.id ? getDragOverClass(parent) : ""
+          } ${
+            draggedItem.parentId === parent.id
+              ? "activeDragWithChildOneChild"
+              : ""
           }`}
           onDragOver={(e) => handleDragOverParent(e, parent.id)}
           onDrop={(e) => handleDragEnter(e, parent.id)}
           onDropCapture={handleDropEndCapture}
         >
           {parent.children.map((child, index) =>
-            renderChild(child, index, parent)
-          )}
+                renderChild(child, index, parent)
+              )}
         </div>
       ))}
     </div>

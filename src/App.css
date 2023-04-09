@@ -22,6 +22,9 @@
 .activeDragOverWithChild {
   background-color: #f5f6ff;
 }
+.activeDragWithChildOneChild {
+  height: 48px;
+}
 
 .child {
   background: #d6d8e6;
@@ -31,6 +34,10 @@
   width: 120px;
   margin: 0px 5px;
   cursor: grab;
+}
+
+.childPlaceholder {
+  animation: growWidth 0.2s ease-in-out forwards;
 }
 
 .makeChildVisible {
@@ -43,5 +50,13 @@
   }
   to {
     height: 48px;
+  }
+}
+@keyframes growWidth {
+  from {
+    width: 0px;
+  }
+  to {
+    width: 120px;
   }
 }
