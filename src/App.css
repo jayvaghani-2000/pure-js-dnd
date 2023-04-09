@@ -41,6 +41,13 @@
   animation: growWidth 0.2s ease-in-out forwards;
 }
 
+.handleRemoveSelectedElement {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  animation: shrink 0.2s linear forwards;
+}
+
 .makeChildVisible {
   display: block !important;
 }
@@ -59,5 +66,15 @@
   }
   to {
     width: 120px;
+  }
+}
+@keyframes shrink {
+  from {
+    opacity: 0;
+    width: 120px;
+  }
+  to {
+    opacity: 0;
+    width: 0px;
   }
 }

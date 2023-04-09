@@ -74,7 +74,7 @@ function Draggable() {
 
   const handleDrag = (e, items) => {
     if (draggedElementRef.current) {
-      draggedElementRef.current.style.display = "none";
+      draggedElementRef.current.classList.add("handleRemoveSelectedElement");
     }
     const dragBetweenIndex = Math.round((e.clientX - dragXDifference) / 120);
     if (placeholderIndex !== dragBetweenIndex) {
@@ -84,7 +84,7 @@ function Draggable() {
 
   const handleDragEnd = () => {
     if (draggedElementRef.current) {
-      draggedElementRef.current.style.display = "block";
+      draggedElementRef.current.classList.remove("handleRemoveSelectedElement");
     }
     setDraggedItem({});
     setDraggedOverParent("");
@@ -107,7 +107,7 @@ function Draggable() {
   const handleDropEndCapture = (e) => {
     e.preventDefault();
     if (draggedElementRef.current) {
-      draggedElementRef.current.style.display = "block";
+      draggedElementRef.current.classList.remove("handleRemoveSelectedElement");
     }
     previousDraggedOverParent.current = "";
     setDraggedOverParent("");
