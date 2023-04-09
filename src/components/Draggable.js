@@ -2,20 +2,23 @@ import { useRef, useState } from "react";
 import { INITIAL_DRAGGABLE__ELEMENTS } from "./constant";
 
 function Draggable() {
-  const [parents, setParents] = useState(INITIAL_DRAGGABLE__ELEMENTS);
   const draggedElementRef = useRef();
   const dummyRef = useRef();
   const previousDraggedOverParent = useRef("");
   const previousPlaceHolder = useRef({});
+
+  const [parents, setParents] = useState(INITIAL_DRAGGABLE__ELEMENTS);
   const [draggedOverParent, setDraggedOverParent] = useState("");
   const [draggedItem, setDraggedItem] = useState({});
   const [placeholderIndex, setPlaceholderIndex] = useState({});
+  const [dragXDifference, setDragXDifference] = useState(0);
 
   const getDraggedParentIndex = (parents, item) => {
     return parents.findIndex((parent) => parent.id === item.parentId);
   };
 
   const handleDragStart = (event, item) => {
+    setDragXDifference(event.clientX - item.index * 120);
     setDraggedItem(item);
   };
 
@@ -24,7 +27,9 @@ function Draggable() {
     if (Object.keys(draggedItem).length === 0) {
       return;
     }
-    const droppingElementPosition = Math.round(e.clientX / 100) - 1;
+    const droppingElementPosition =
+      Math.round((e.clientX - dragXDifference) / 120) - 1;
+    console.log(droppingElementPosition);
     const targetIndex = droppingElementPosition;
 
     const updatedParents = [...parents];
@@ -85,6 +90,7 @@ function Draggable() {
     setDraggedOverParent("");
     previousPlaceHolder.current = {};
     previousDraggedOverParent.current = "";
+    setDragXDifference(0);
   };
 
   const handleDragOverParent = (e, parentId) => {
@@ -104,6 +110,7 @@ function Draggable() {
     previousPlaceHolder.current = {};
     setDraggedOverParent("");
     setPlaceholderIndex({});
+    setDragXDifference(0);
   };
 
   const renderChild = (item, index, parent) => {
