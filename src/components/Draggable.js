@@ -5,12 +5,12 @@ function Draggable() {
   const draggedElementRef = useRef();
   const dummyRef = useRef();
   const previousDraggedOverParent = useRef("");
-  const previousPlaceHolder = useRef({});
 
   const [parents, setParents] = useState(INITIAL_DRAGGABLE__ELEMENTS);
   const [draggedOverParent, setDraggedOverParent] = useState("");
   const [draggedItem, setDraggedItem] = useState({});
-  const [placeholderIndex, setPlaceholderIndex] = useState({});
+  const [placeholderIndex, setPlaceholderIndex] = useState();
+  const [activeDragOverParent, setActiveDragOverParent] = useState();
   const [dragXDifference, setDragXDifference] = useState(0);
 
   const getDraggedParentIndex = (parents, item) => {
@@ -27,10 +27,7 @@ function Draggable() {
     if (Object.keys(draggedItem).length === 0) {
       return;
     }
-    const droppingElementPosition =
-      Math.round((e.clientX - dragXDifference) / 120) - 1;
-    console.log(droppingElementPosition);
-    const targetIndex = droppingElementPosition;
+    const targetIndex = placeholderIndex === -1 ? 0 : placeholderIndex;
 
     const updatedParents = [...parents];
     const draggedParentIndex = getDraggedParentIndex(
@@ -75,9 +72,13 @@ function Draggable() {
     setParents(handleAddIntermediateDroppable);
   };
 
-  const handleDrag = (event, items) => {
+  const handleDrag = (e, items) => {
     if (draggedElementRef.current) {
       draggedElementRef.current.style.display = "none";
+    }
+    const dragBetweenIndex = Math.round((e.clientX - dragXDifference) / 120);
+    if (placeholderIndex !== dragBetweenIndex) {
+      setPlaceholderIndex(dragBetweenIndex);
     }
   };
 
@@ -86,10 +87,9 @@ function Draggable() {
       draggedElementRef.current.style.display = "block";
     }
     setDraggedItem({});
-    setPlaceholderIndex({});
     setDraggedOverParent("");
-    previousPlaceHolder.current = {};
     previousDraggedOverParent.current = "";
+    setActiveDragOverParent(undefined);
     setDragXDifference(0);
   };
 
@@ -99,6 +99,9 @@ function Draggable() {
       setDraggedOverParent(parentId);
       previousDraggedOverParent.current = parentId;
     }
+    if (parentId !== activeDragOverParent) {
+      setActiveDragOverParent(parentId);
+    }
   };
 
   const handleDropEndCapture = (e) => {
@@ -107,9 +110,8 @@ function Draggable() {
       draggedElementRef.current.style.display = "block";
     }
     previousDraggedOverParent.current = "";
-    previousPlaceHolder.current = {};
     setDraggedOverParent("");
-    setPlaceholderIndex({});
+    setActiveDragOverParent(undefined);
     setDragXDifference(0);
   };
 
