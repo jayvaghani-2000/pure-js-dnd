@@ -5,6 +5,7 @@ function Draggable() {
   const draggedElementRef = useRef();
   const dummyRef = useRef();
   const previousDraggedOverParent = useRef("");
+  const helperRef = useRef(0);
 
   const [parents, setParents] = useState(INITIAL_DRAGGABLE__ELEMENTS);
   const [draggedOverParent, setDraggedOverParent] = useState("");
@@ -116,7 +117,9 @@ function Draggable() {
   };
 
   const renderChild = (item, index, parent) => {
-    return (
+    return item.id === "placeholder" ? (
+      <div className="childPlaceholder"></div>
+    ) : (
       <div
         key={item.id}
         className={`child ${
@@ -128,7 +131,7 @@ function Draggable() {
           handleDragStart(e, { item, index, parentId: parent.id })
         }
         ref={
-          index === draggedItem.index && draggedItem.parentId === parent.id
+          item.id === draggedItem.item?.id && draggedItem.parentId === parent.id
             ? draggedElementRef
             : dummyRef
         }
@@ -144,6 +147,20 @@ function Draggable() {
     return parent.children.length > 0
       ? "activeDragOverWithChild"
       : "activeDragOver";
+  };
+
+  const addPlaceholderHelper = (childrens) => {
+    const updatedChildren = [...childrens];
+    const placeholder = { id: "placeholder", text: "" };
+
+    if (placeholderIndex < 0) {
+      updatedChildren.unshift(placeholder);
+    } else {
+      updatedChildren.splice(placeholderIndex, 0, placeholder);
+    }
+    console.log("updatedChildren", helperRef.current, { updatedChildren });
+    helperRef.current += 1;
+    return updatedChildren;
   };
 
   return (
@@ -162,9 +179,20 @@ function Draggable() {
           onDrop={(e) => handleDragEnter(e, parent.id)}
           onDropCapture={handleDropEndCapture}
         >
+          {parent.id === activeDragOverParent
+            ? addPlaceholderHelper(parent.children).map((child, index) =>
+                renderChild(child, index, parent)
+              )
+            : parent.children.map((child, index) =>
+                renderChild(child, index, parent)
+              )}
+
+          {/* {parent.id === activeDragOverParent &&
+            addPlaceholderHelper(parent.children)}
+
           {parent.children.map((child, index) =>
             renderChild(child, index, parent)
-          )}
+          )} */}
         </div>
       ))}
     </div>
