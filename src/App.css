@@ -50,6 +50,9 @@
 
 .makeChildVisible {
   display: block !important;
+  padding: 10px !important;
+  width: 120px !important;
+  opacity: 1 !important;
 }
 
 @keyframes grow {
