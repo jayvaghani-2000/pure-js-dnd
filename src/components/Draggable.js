@@ -6,7 +6,6 @@ function Draggable(props) {
   const draggedElementRef = useRef();
   const dummyRef = useRef();
   const previousDraggedOverParent = useRef("");
-  const helperRef = useRef(0);
 
   const [parents, setParents] = useState(INITIAL_DRAGGABLE__ELEMENTS);
   const [draggedOverParent, setDraggedOverParent] = useState("");
@@ -81,7 +80,10 @@ function Draggable(props) {
     const dragBetweenIndex = Math.round(
       (clientXRef.current - dragXDifference) / 120
     );
-    if (placeholderIndex !== dragBetweenIndex) {
+    if (
+      placeholderIndex !== dragBetweenIndex &&
+      typeof clientXRef.current !== "undefined"
+    ) {
       setPlaceholderIndex(dragBetweenIndex);
     }
   };
@@ -159,9 +161,14 @@ function Draggable(props) {
     if (placeholderIndex < 0) {
       updatedChildren.unshift(placeholder);
     } else {
-      updatedChildren.splice(placeholderIndex, 0, placeholder);
+      updatedChildren.splice(
+        draggedItem.index < placeholderIndex
+          ? placeholderIndex + 1
+          : placeholderIndex,
+        0,
+        placeholder
+      );
     }
-    helperRef.current += 1;
     return updatedChildren;
   };
 
