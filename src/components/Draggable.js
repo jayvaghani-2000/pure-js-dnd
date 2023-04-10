@@ -162,7 +162,8 @@ function Draggable(props) {
       updatedChildren.unshift(placeholder);
     } else {
       updatedChildren.splice(
-        draggedItem.index < placeholderIndex
+        draggedItem.index < placeholderIndex &&
+          draggedItem.parentId === activeDragOverParent
           ? placeholderIndex + 1
           : placeholderIndex,
         0,
