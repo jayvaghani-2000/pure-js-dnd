@@ -71,8 +71,8 @@ function Draggable(props) {
         ])
         .flat(),
     ];
-
     setParents(handleAddIntermediateDroppable);
+    setDraggedItem({});
   };
 
   const handleDrag = (e, items) => {
@@ -131,7 +131,9 @@ function Draggable(props) {
       <div
         key={item.id}
         className={`child ${
-          Object.keys(draggedItem).length === 0 ? "makeChildVisible" : ""
+          Object.keys(draggedItem).length === 0
+            ? "makeChildVisible"
+            : ""
         }`}
         id={item.id}
         draggable
