@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
 import { INITIAL_DRAGGABLE__ELEMENTS } from "./constant";
 
-function Draggable() {
+function Draggable(props) {
+  const { clientXRef } = props;
   const draggedElementRef = useRef();
   const dummyRef = useRef();
   const previousDraggedOverParent = useRef("");
@@ -76,8 +77,13 @@ function Draggable() {
     if (draggedElementRef.current) {
       draggedElementRef.current.classList.add("handleRemoveSelectedElement");
     }
-    const dragBetweenIndex = Math.round((e.clientX - dragXDifference) / 120);
-    if (placeholderIndex !== dragBetweenIndex) {
+    const dragBetweenIndex = Math.round(
+      (clientXRef.current - dragXDifference) / 120
+    );
+    if (
+      placeholderIndex !== dragBetweenIndex &&
+      typeof clientXRef.current !== "undefined"
+    ) {
       setPlaceholderIndex(dragBetweenIndex);
     }
   };
@@ -116,7 +122,9 @@ function Draggable() {
   };
 
   const renderChild = (item, index, parent) => {
-    return (
+    return item.id === "placeholder" ? (
+      <div key={item.id} className="childPlaceholder"></div>
+    ) : (
       <div
         key={item.id}
         className={`child ${
@@ -128,7 +136,7 @@ function Draggable() {
           handleDragStart(e, { item, index, parentId: parent.id })
         }
         ref={
-          index === draggedItem.index && draggedItem.parentId === parent.id
+          item.id === draggedItem.item?.id && draggedItem.parentId === parent.id
             ? draggedElementRef
             : dummyRef
         }
@@ -144,6 +152,25 @@ function Draggable() {
     return parent.children.length > 0
       ? "activeDragOverWithChild"
       : "activeDragOver";
+  };
+
+  const addPlaceholderHelper = (childrens) => {
+    const updatedChildren = [...childrens];
+    const placeholder = { id: "placeholder", text: "" };
+
+    if (placeholderIndex < 0) {
+      updatedChildren.unshift(placeholder);
+    } else {
+      updatedChildren.splice(
+        draggedItem.index < placeholderIndex &&
+          draggedItem.parentId === activeDragOverParent
+          ? placeholderIndex + 1
+          : placeholderIndex,
+        0,
+        placeholder
+      );
+    }
+    return updatedChildren;
   };
 
   return (
@@ -162,9 +189,13 @@ function Draggable() {
           onDrop={(e) => handleDragEnter(e, parent.id)}
           onDropCapture={handleDropEndCapture}
         >
-          {parent.children.map((child, index) =>
-            renderChild(child, index, parent)
-          )}
+          {parent.id === activeDragOverParent
+            ? addPlaceholderHelper(parent.children).map((child, index) =>
+                renderChild(child, index, parent)
+              )
+            : parent.children.map((child, index) =>
+                renderChild(child, index, parent)
+              )}
         </div>
       ))}
     </div>
