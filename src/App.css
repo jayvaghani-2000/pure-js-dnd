@@ -18,9 +18,10 @@
 }
 
 .activeDragOver {
-  animation: grow 0.05s ease-in-out forwards;
   background-color: #f5f6ff;
   opacity: 0.5;
+  /* animation: grow 0.05s ease-in-out forwards; */
+  height: 48px;
 }
 
 .activeDragOverWithChild {
@@ -42,14 +43,17 @@
 }
 
 .childPlaceholder {
-  animation: growWidth 0.2s ease-in-out forwards;
+  /* animation: growWidth 0.2s ease-in-out forwards; */
+  width: 120px;
 }
 
 .handleRemoveSelectedElement {
   position: relative;
   padding: 0;
   overflow: hidden;
-  animation: shrink 0.2s linear forwards;
+  /* animation: shrink 0.2s linear forwards; */
+  opacity: 0;
+  width: 0px;
 }
 
 .makeChildVisible {

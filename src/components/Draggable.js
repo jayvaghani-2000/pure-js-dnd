@@ -21,10 +21,12 @@ function Draggable(props) {
   const handleDragStart = (event, item) => {
     setDragXDifference(event.clientX - item.index * 120);
     setDraggedItem(item);
+    event.target.style.boxShadow = "inset 0 0 10px 10px rgba(39, 43, 84, 0.5)";
   };
 
   const handleDragEnter = (e, targetParentId) => {
     e.preventDefault();
+    e.target.style = null;
     if (Object.keys(draggedItem).length === 0) {
       return;
     }
@@ -88,7 +90,8 @@ function Draggable(props) {
     }
   };
 
-  const handleDragEnd = () => {
+  const handleDragEnd = (e) => {
+    e.target.style = null;
     if (draggedElementRef.current) {
       draggedElementRef.current.classList.remove("handleRemoveSelectedElement");
     }
