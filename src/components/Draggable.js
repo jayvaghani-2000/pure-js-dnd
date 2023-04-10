@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
 import { INITIAL_DRAGGABLE__ELEMENTS } from "./constant";
 
-function Draggable() {
+function Draggable(props) {
+  const { clientXRef } = props;
   const draggedElementRef = useRef();
   const dummyRef = useRef();
   const previousDraggedOverParent = useRef("");
@@ -77,7 +78,9 @@ function Draggable() {
     if (draggedElementRef.current) {
       draggedElementRef.current.classList.add("handleRemoveSelectedElement");
     }
-    const dragBetweenIndex = Math.round((e.clientX - dragXDifference) / 120);
+    const dragBetweenIndex = Math.round(
+      (clientXRef.current - dragXDifference) / 120
+    );
     if (placeholderIndex !== dragBetweenIndex) {
       setPlaceholderIndex(dragBetweenIndex);
     }
@@ -118,7 +121,7 @@ function Draggable() {
 
   const renderChild = (item, index, parent) => {
     return item.id === "placeholder" ? (
-      <div className="childPlaceholder"></div>
+      <div key={item.id} className="childPlaceholder"></div>
     ) : (
       <div
         key={item.id}
@@ -158,7 +161,6 @@ function Draggable() {
     } else {
       updatedChildren.splice(placeholderIndex, 0, placeholder);
     }
-    console.log("updatedChildren", helperRef.current, { updatedChildren });
     helperRef.current += 1;
     return updatedChildren;
   };
@@ -186,13 +188,6 @@ function Draggable() {
             : parent.children.map((child, index) =>
                 renderChild(child, index, parent)
               )}
-
-          {/* {parent.id === activeDragOverParent &&
-            addPlaceholderHelper(parent.children)}
-
-          {parent.children.map((child, index) =>
-            renderChild(child, index, parent)
-          )} */}
         </div>
       ))}
     </div>
