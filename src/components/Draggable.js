@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { INITIAL_DRAGGABLE__ELEMENTS } from "./constant";
+import { handleCreateChildParentRelation } from "./constant";
 
 function Draggable(props) {
   const { clientXRef } = props;
@@ -7,7 +7,7 @@ function Draggable(props) {
   const dummyRef = useRef();
   const previousDraggedOverParent = useRef("");
 
-  const [parents, setParents] = useState(INITIAL_DRAGGABLE__ELEMENTS);
+  const [parents, setParents] = useState(handleCreateChildParentRelation());
   const [draggedOverParent, setDraggedOverParent] = useState("");
   const [draggedItem, setDraggedItem] = useState({});
   const [placeholderIndex, setPlaceholderIndex] = useState();
@@ -66,7 +66,14 @@ function Draggable(props) {
       ...updatedParents
         .filter((i) => i.children.length)
         .map((j, index) => [
-          { ...j, id: `droppable${2 * index + 1}` },
+          {
+            id: `droppable${2 * index + 1}`,
+            children: j.children.map((k, colIndex) => ({
+              ...k,
+              col: colIndex,
+              row: index,
+            })),
+          },
           { id: `droppable${2 * index + 2}`, children: [] },
         ])
         .flat(),
@@ -131,9 +138,7 @@ function Draggable(props) {
       <div
         key={item.id}
         className={`child ${
-          Object.keys(draggedItem).length === 0
-            ? "makeChildVisible"
-            : ""
+          Object.keys(draggedItem).length === 0 ? "makeChildVisible" : ""
         }`}
         id={item.id}
         draggable
