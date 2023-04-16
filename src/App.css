@@ -43,7 +43,6 @@
 }
 
 .childPlaceholder {
-  /* animation: growWidth 0.2s ease-in-out forwards; */
   width: 120px;
 }
 
@@ -51,7 +50,6 @@
   position: relative;
   padding: 0;
   overflow: hidden;
-  /* animation: shrink 0.2s linear forwards; */
   opacity: 0;
   width: 0px;
 }
