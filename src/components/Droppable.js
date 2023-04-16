@@ -11,18 +11,42 @@ const Droppable = (props) => {
     setDragXDifference,
     handleDragEnter,
     dragOverClassName = "",
+    draggedItemDimension,
+    dragXDifference,
+    setPlaceholderIndex
   } = props;
   const droppableRef = useRef();
 
   const handleDragOverParent = (e, parentId) => {
     e.preventDefault();
+    const { width } = draggedItemDimension.current;
+
+    const draggedInitialClientX = e.clientX - dragXDifference;
+    const draggedLastClientX = e.clientX + width - dragXDifference;
+    const draggedMiddleClientX =
+      (draggedInitialClientX + draggedLastClientX) / 2;
+
+    const children = [];
 
     for (let i = 0; i < droppableRef.current.children.length; i++) {
-      console.log(
-        droppableRef.current.children[i].getBoundingClientRect().width
-      );
+      if (droppableRef.current.children[i].getBoundingClientRect().width) {
+        children.push(droppableRef.current.children[i]);
+      }
     }
 
+    let indexForPlaceHolder = 0;
+
+    for (let i = 0; i < children.length; i++) {
+      const { width, left } = children[i].getBoundingClientRect();
+      const elementMiddle = left + width / 2;
+      if (draggedInitialClientX < elementMiddle) {
+        indexForPlaceHolder = i;
+        break;
+      }
+      indexForPlaceHolder = children.length;
+    }
+    setPlaceholderIndex(indexForPlaceHolder);
+    console.log("indexForPlaceHolder", indexForPlaceHolder);
 
     if (previousDraggedOverParent.current !== parentId) {
       setDraggedOverParent(parentId);

@@ -15,10 +15,12 @@ const DraggableItem = (props) => {
     setDraggedOverParent,
     previousDraggedOverParent,
     setActiveDragOverParent,
+    draggedItemDimension,
   } = props;
 
   const handleDragStart = (event, item) => {
     setDragXDifference(event.clientX - item.index * 120);
+    draggedItemDimension.current = event.target.getBoundingClientRect();
     setDraggedItem(item);
     event.target.style.boxShadow = "inset 0 0 10px 10px rgba(39, 43, 84, 0.5)";
   };
@@ -29,15 +31,15 @@ const DraggableItem = (props) => {
     if (draggedElementRef.current) {
       draggedElementRef.current.classList.add("handleRemoveSelectedElement");
     }
-    const dragBetweenIndex = Math.round(
-      (clientXRef.current - dragXDifference) / 120
-    );
-    if (
-      placeholderIndex !== dragBetweenIndex &&
-      typeof clientXRef.current !== "undefined"
-    ) {
-      setPlaceholderIndex(dragBetweenIndex);
-    }
+    // const dragBetweenIndex = Math.round(
+    //   (clientXRef.current - dragXDifference) / 120
+    // );
+    // if (
+    //   placeholderIndex !== dragBetweenIndex &&
+    //   typeof clientXRef.current !== "undefined"
+    // ) {
+    //   setPlaceholderIndex(dragBetweenIndex);
+    // }
   };
 
   const handleDragEnd = (e) => {

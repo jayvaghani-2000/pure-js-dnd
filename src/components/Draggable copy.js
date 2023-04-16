@@ -11,6 +11,7 @@ import Droppable from "./Droppable";
 function Draggable(props) {
   const { clientXRef } = props;
   const previousDraggedOverParent = useRef("");
+  const draggedItemDimension = useRef()
   const [cards, setCards] = useState(INITIAL_DRAGGABLE_CHILDREN_ELEMENTS);
   const [draggedOverParent, setDraggedOverParent] = useState("");
   const [draggedItem, setDraggedItem] = useState({});
@@ -87,6 +88,7 @@ function Draggable(props) {
     setDraggedOverParent,
     previousDraggedOverParent,
     setActiveDragOverParent,
+    draggedItemDimension
   };
 
   const droppableProps = {
@@ -96,6 +98,9 @@ function Draggable(props) {
     setActiveDragOverParent,
     setDragXDifference,
     handleDragEnter,
+    draggedItemDimension,
+    dragXDifference,
+    setPlaceholderIndex
   };
 
   const groupedCards = groupCardRowWise(cards);
