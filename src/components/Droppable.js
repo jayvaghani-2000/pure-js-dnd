@@ -28,6 +28,7 @@ const Droppable = (props) => {
       (draggedInitialClientX + draggedLastClientX) / 2;
 
     const children = [];
+    let passPlaceholder = false;
 
     for (let i = 0; i < droppableRef.current.children.length; i++) {
       if (droppableRef.current.children[i].getBoundingClientRect().width) {
@@ -39,16 +40,19 @@ const Droppable = (props) => {
     for (let i = 0; i < children.length; i++) {
       const { width, left } = children[i].getBoundingClientRect();
       const elementMiddle = left + width / 2;
+      console.log("draggedInitialClientX", draggedInitialClientX);
       if (draggedInitialClientX < elementMiddle) {
         indexForPlaceHolder = i;
         break;
       }
       indexForPlaceHolder = children.length;
     }
+
     if (placeholderIndex !== indexForPlaceHolder) {
+      console.log("indexForPlaceHolder", indexForPlaceHolder);
       setPlaceholderIndex(indexForPlaceHolder);
     }
-    
+
     if (previousDraggedOverParent.current !== parentId) {
       setDraggedOverParent(parentId);
       previousDraggedOverParent.current = parentId;

@@ -4,7 +4,7 @@ import {
   INITIAL_DRAGGABLE_CHILDREN_ELEMENTS,
   reArrangeAfterDrop,
 } from "./constant";
-import DraggableItem from "./DraggableItem copy";
+import DraggableItem from "./DraggableItem";
 import Droppable from "./Droppable";
 
 function Draggable(props) {

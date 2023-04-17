@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 
 export const INITIAL_DRAGGABLE_CHILDREN_ELEMENTS = [
-  { id: uuidv4(), text: "Banana", col: 1, row: 0 },
-  { id: uuidv4(), text: "Ice", col: 4, row: 0 },
-  { id: uuidv4(), text: "Hand", col: 3, row: 0 },
+  { id: uuidv4(), text: "Banana ", col: 1, row: 0 },
+  { id: uuidv4(), text: "Ice asd aaa", col: 4, row: 0 },
+  { id: uuidv4(), text: "Hand sa", col: 3, row: 0 },
   { id: uuidv4(), text: "Cat", col: 2, row: 0 },
   { id: uuidv4(), text: "Apple", col: 0, row: 0 },
   { id: uuidv4(), text: "Dog", col: 0, row: 1 },
