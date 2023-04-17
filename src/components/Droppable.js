@@ -13,7 +13,8 @@ const Droppable = (props) => {
     dragOverClassName = "",
     draggedItemDimension,
     dragXDifference,
-    setPlaceholderIndex
+    setPlaceholderIndex,
+    placeholderIndex,
   } = props;
   const droppableRef = useRef();
 
@@ -35,7 +36,6 @@ const Droppable = (props) => {
     }
 
     let indexForPlaceHolder = 0;
-
     for (let i = 0; i < children.length; i++) {
       const { width, left } = children[i].getBoundingClientRect();
       const elementMiddle = left + width / 2;
@@ -45,9 +45,10 @@ const Droppable = (props) => {
       }
       indexForPlaceHolder = children.length;
     }
-    setPlaceholderIndex(indexForPlaceHolder);
-    console.log("indexForPlaceHolder", indexForPlaceHolder);
-
+    if (placeholderIndex !== indexForPlaceHolder) {
+      setPlaceholderIndex(indexForPlaceHolder);
+    }
+    
     if (previousDraggedOverParent.current !== parentId) {
       setDraggedOverParent(parentId);
       previousDraggedOverParent.current = parentId;

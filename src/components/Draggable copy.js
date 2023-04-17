@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
 import {
   groupCardRowWise,
-  handleCreateChildParentRelation,
   INITIAL_DRAGGABLE_CHILDREN_ELEMENTS,
   reArrangeAfterDrop,
 } from "./constant";
@@ -11,7 +10,7 @@ import Droppable from "./Droppable";
 function Draggable(props) {
   const { clientXRef } = props;
   const previousDraggedOverParent = useRef("");
-  const draggedItemDimension = useRef()
+  const draggedItemDimension = useRef();
   const [cards, setCards] = useState(INITIAL_DRAGGABLE_CHILDREN_ELEMENTS);
   const [draggedOverParent, setDraggedOverParent] = useState("");
   const [draggedItem, setDraggedItem] = useState({});
@@ -65,14 +64,7 @@ function Draggable(props) {
     if (placeholderIndex < 0) {
       updatedChildren.unshift(placeholder);
     } else {
-      updatedChildren.splice(
-        draggedItem.index < placeholderIndex &&
-          draggedItem.parentId === activeDragOverParent
-          ? placeholderIndex + 1
-          : placeholderIndex,
-        0,
-        placeholder
-      );
+      updatedChildren.splice(placeholderIndex, 0, placeholder);
     }
     return updatedChildren;
   };
@@ -88,7 +80,7 @@ function Draggable(props) {
     setDraggedOverParent,
     previousDraggedOverParent,
     setActiveDragOverParent,
-    draggedItemDimension
+    draggedItemDimension,
   };
 
   const droppableProps = {
@@ -100,7 +92,8 @@ function Draggable(props) {
     handleDragEnter,
     draggedItemDimension,
     dragXDifference,
-    setPlaceholderIndex
+    setPlaceholderIndex,
+    placeholderIndex,
   };
 
   const groupedCards = groupCardRowWise(cards);
