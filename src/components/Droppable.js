@@ -63,7 +63,6 @@ const Droppable = (props) => {
     }
 
     if (placeholderIndex !== indexForPlaceHolder) {
-      console.log("indexForPlaceHolder", indexForPlaceHolder);
       setPlaceholderIndex(indexForPlaceHolder);
     }
 

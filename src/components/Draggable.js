@@ -25,6 +25,7 @@ function Draggable(props) {
       return;
     }
     const targetIndex = placeholderIndex === -1 ? 0 : placeholderIndex;
+    console.log("targetIndex", targetIndex);
     const updatedParents = [...cards];
     const selectedBlock = updatedParents.findIndex(
       (i) => i.id === draggedItem.item.id
@@ -64,7 +65,14 @@ function Draggable(props) {
     if (placeholderIndex < 0) {
       updatedChildren.unshift(placeholder);
     } else {
-      updatedChildren.splice(placeholderIndex, 0, placeholder);
+      updatedChildren.splice(
+        draggedItem.index < placeholderIndex &&
+          draggedItem.parentId === activeDragOverParent
+          ? placeholderIndex + 1
+        : placeholderIndex,
+        0,
+        placeholder
+      );
     }
     return updatedChildren;
   };
