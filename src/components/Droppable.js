@@ -32,15 +32,29 @@ const Droppable = (props) => {
 
     for (let i = 0; i < droppableRef.current.children.length; i++) {
       if (droppableRef.current.children[i].getBoundingClientRect().width) {
-        children.push(droppableRef.current.children[i]);
+        if (
+          droppableRef.current.children[i].classList.value ===
+          "childPlaceholder"
+        ) {
+          passPlaceholder = true;
+          continue;
+        }
+
+        const { width, left } =
+          droppableRef.current.children[i].getBoundingClientRect();
+        children.push({
+          width,
+          left: passPlaceholder
+            ? left - draggedItemDimension.current.width
+            : left,
+        });
       }
     }
 
     let indexForPlaceHolder = 0;
     for (let i = 0; i < children.length; i++) {
-      const { width, left } = children[i].getBoundingClientRect();
+      const { width, left } = children[i];
       const elementMiddle = left + width / 2;
-      console.log("draggedInitialClientX", draggedInitialClientX);
       if (draggedInitialClientX < elementMiddle) {
         indexForPlaceHolder = i;
         break;
