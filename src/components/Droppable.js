@@ -2,31 +2,28 @@ import React, { useRef } from "react";
 
 const Droppable = (props) => {
   const {
-    children,
-    previousDraggedOverParent,
-    setDraggedOverParent,
     activeDragOverParent,
     setActiveDragOverParent,
+    children,
     rowId,
-    setDragXDifference,
-    handleDragEnter,
-    dragOverClassName = "",
     draggedItemDimension,
+    previousDraggedOverParent,
     dragXDifference,
+    setDragXDifference,
     setPlaceholderIndex,
     placeholderIndex,
+    draggedOverParent,
+    rowBlock,
+    handleDrop,
+    setDraggedOverParent,
+    draggedItem,
+    setDraggedItem,
   } = props;
   const droppableRef = useRef();
 
   const handleDragOverParent = (e, parentId) => {
     e.preventDefault();
-    const { width } = draggedItemDimension.current;
-
     const draggedInitialClientX = e.clientX - dragXDifference;
-    const draggedLastClientX = e.clientX + width - dragXDifference;
-    const draggedMiddleClientX =
-      (draggedInitialClientX + draggedLastClientX) / 2;
-
     const children = [];
     let passPlaceholder = false;
 
@@ -82,15 +79,42 @@ const Droppable = (props) => {
     setDragXDifference(0);
   };
 
+  const getDragOverClass = (row) => {
+    return row.length > 0 ? "activeDragOverWithChild" : "activeDragOver";
+  };
+
   return (
     <div
       onDragOver={(e) => handleDragOverParent(e, rowId)}
-      onDrop={(e) => handleDragEnter(e, rowId)}
+      onDrop={(e) => {
+        handleDrop(
+          e,
+          { draggedItem, draggedOverParent, placeholderIndex },
+          rowId
+        );
+        setDraggedOverParent("");
+        setDraggedItem({});
+      }}
       onDropCapture={handleDropEndCapture}
-      className={dragOverClassName}
       ref={droppableRef}
+      className={`droppable ${
+        draggedOverParent === rowId ? getDragOverClass(rowBlock) : ""
+      } ${
+        draggedItem.parentId === rowId && rowBlock.length === 1
+          ? "activeDragWithChildOneChild"
+          : ""
+      }`}
     >
-      {children}
+      {React.Children.map(
+        children({ draggedItem, placeholderIndex, activeDragOverParent }),
+        (child) => {
+          return React.cloneElement(child, {
+            ...props,
+            setDraggedItem: setDraggedItem,
+            draggedItem: draggedItem,
+          });
+        }
+      )}
     </div>
   );
 };
