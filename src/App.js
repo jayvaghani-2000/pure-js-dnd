@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import "./App.css";
-import Draggable from "./components/Draggable";
+import Block from "./components/Block";
 
 function App() {
   const clientXRef = useRef();
@@ -11,7 +11,7 @@ function App() {
 
   return (
     <div className="app" onDragOver={handleGetDragOver}>
-      <Draggable clientXRef={clientXRef} />
+      <Block clientXRef={clientXRef} />
     </div>
   );
 }
